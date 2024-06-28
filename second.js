@@ -10,14 +10,15 @@ function stopCounter(interval, timeout) {
   const intervalID = setInterval(() => {
     counter++;
     console.log(counter);
-
-    if (counter * intervalInMilliSeconds >= timeoutInMilliSeconds) {
-      clearInterval(intervalID);
-    }
   }, intervalInMilliSeconds);
+  setTimeout(() => {
+    // if (counter * intervalInMilliSeconds >= timeoutInMilliSeconds) {
+      clearInterval(intervalID);
+    // }
+  }, timeoutInMilliSeconds);
 }
 
-stopCounter(5, 20);
+stopCounter(1, 5);
 
 // function twoSeconds() {
 //     let interval;
