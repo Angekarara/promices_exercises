@@ -13,12 +13,12 @@ countryDetails("malawi")
     )
       .then((res) => res.json())
       .then((data) => {
-        const Temperature = `${data.current_weather.temperature}°C`
+        const Current_Temperature = `${data.current_weather.temperature}°C`
        
 console.log({
     country,
     capital,
-    Temperature
+    Current_Temperature
 })
 
       });
