@@ -1,24 +1,27 @@
-// console.log(1)
-// console.log(2)
-// console.log(3)
-// console.log(4)
-// console.log(5)
-function steps(n) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(n);
-    }, 1000);
+const performFastAsync = async (apiUrl, duration) => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+  let clearTime;
+  const promise = new Promise((resolve, _) => {
+    clearTime = setTimeout(() => {
+      controller.abort();
+      resolve([]);
+    }, duration);
   });
-}
 
-async function counting() {
-  try {
-    console.log(await steps(1));
-    console.log(await steps(2));
-    console.log(await steps(3));
-  } catch (error) {
-    console.log('Error')
-  }
-}
+  const response = await Promise.race([
+    fetch(apiUrl, { signal }).then((data) => {
+      clearTimeout(clearTime);
+      return data.json();
+    }),
+    promise,
+  ]);
+  return response;
+};
 
-console.log(counting());
+performFastAsync(
+  "https://jsonplaceholder.typicode.com/todos/1",
+  10
+).then((data) => {
+  console.log(data);
+});
